@@ -11,7 +11,9 @@ int main(void){
 	printf("p2<p0: %d \n", p2 < p0);
 	printf("p1<p0: %d \n", p1 < p0);
 
-
+	/*
+ 	The substraction brings the number of element difference
+ 	*/
 	printf("p2-p0: %d \n", p2 - p0);
 	printf("p2-p1: %d \n", p2 - p1);
 	printf("p1-p0: %d \n", p1 - p0);
