@@ -8,16 +8,42 @@ typedef struct _person {
 	char *title;
 } Person;
 
-int main(void) {
-	Person *p1 = (Person*) malloc(sizeof(Person));
-	p1-> age = 4;
-	p1->name = (char*) malloc(6 * sizeof(char));
-	strcpy(p1->name, "Ayyub");
-	p1->title = (char*) malloc(15 * sizeof(char));
-	strcpy(p1->title, "Operating System");
+void safeFree(void** pp){
+	if(pp != NULL &&  *pp != NULL) {
+		//printf("Free - %p\n", *pp);
+		free(*pp);*pp = NULL;
+	}
+}
 
-	printf(" Name : %s, Age : %d\n", p1->name, p1->age);
-	printf(" Memory : %p, %p, %p\n", p1, p1->name, p1->title);
+Person * createPerson(int age, char* name, char* title) {
+	Person *person = (Person*) malloc(sizeof(Person));
+	person->name = (char*) malloc(strlen(name)*sizeof(char));
+	person->title = (char*) malloc(strlen(title)*sizeof(char));
+
+	person->age = age;
+	strcpy(person->name, name);
+	strcpy(person->title, title);
+
+	return person;
+}
+
+void removePerson(Person **pp){
+	if(pp != NULL && *pp != NULL) {
+		safeFree((void**)&((*pp)->name));
+		safeFree((void**)&((*pp)->title));
+		safeFree((void**)pp);
+	}
+}
+
+int main(void) {
+	Person *p1 = createPerson(4,"Ayyub", "Practical C & Algorithms");
+
+	printf("Name : %s,  Title : %s, Age : %d\n", p1->name,p1->title, p1->age);
+	printf("Memory : %p, %p, %p\n", p1, p1->name, p1->title);
+
+	removePerson(&p1);
+	printf("Memory : %p\n", p1);
+
 
 	return 0;
 }
