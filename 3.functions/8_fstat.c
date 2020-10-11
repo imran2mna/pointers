@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/sysmacros.h>
+#include <pwd.h>
+#include <grp.h>
+
 
 int main(int argc, char* argv[]){
 	char* prg = argv[0];
@@ -35,9 +38,11 @@ lstat(argv[1], &sb);
 	}
 	
 	printf("File\t\t: %s\n", filePath);
-	printf("Device\t\t: [%lx,%lx]\n", (long) major(info->st_dev), (long) minor(info->st_dev));
-	printf("Uid\t\t: %d\n", info->st_uid);
-	printf("Gid\t\t: %d\n", info->st_gid);
+	printf("Device\t\t: [%lx,%lx]\n", (long) major(info->st_dev),
+		       	(long) minor(info->st_dev));
+
+	printf("Uid\t\t: %d\t(%s)\n", info->st_uid, (getpwuid(info->st_uid))->pw_name);
+	printf("Gid\t\t: %d\t(%s)\n", info->st_gid, (getgrgid(info->st_gid))->gr_name);
 	printf("Mode\t\t: %o\n", info->st_mode );
 	
 	printf("File Type\t: ");
